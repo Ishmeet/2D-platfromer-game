@@ -1,19 +1,3 @@
-// Copyright 2017 The Ebiten Authors
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-// +build example jsgo
-
 package main
 
 import (
@@ -30,8 +14,8 @@ import (
 
 const (
 	// Settings
-	screenWidth  = 960
-	screenHeight = 540
+	screenWidth  = 640
+	screenHeight = 448
 )
 
 var (
@@ -61,11 +45,13 @@ func init() {
 	}
 	idleSprite, _ = ebiten.NewImageFromImage(img, ebiten.FilterDefault)
 
-	img, _, err = image.Decode(bytes.NewReader(rplatformer.Background_png))
+	backgroundImage, _, err = ebitenutil.NewImageFromFile("Mario.png", ebiten.FilterDefault)
+
+	// img, _, err = image.Decode(bytes.NewReader(rplatformer.Background_png))
 	if err != nil {
 		panic(err)
 	}
-	backgroundImage, _ = ebiten.NewImageFromImage(img, ebiten.FilterDefault)
+	// backgroundImage, _ = ebiten.NewImageFromImage(img, ebiten.FilterDefault)
 }
 
 const (
@@ -120,10 +106,12 @@ func (c *char) draw(screen *ebiten.Image) {
 	screen.DrawImage(s, op)
 }
 
+// Game ...
 type Game struct {
 	gopher *char
 }
 
+// Update ...
 func (g *Game) Update(screen *ebiten.Image) error {
 	if g.gopher == nil {
 		g.gopher = &char{x: 50 * unit, y: groundY * unit}
@@ -142,10 +130,15 @@ func (g *Game) Update(screen *ebiten.Image) error {
 	return nil
 }
 
+var pos float64
+
+// Draw ...
 func (g *Game) Draw(screen *ebiten.Image) {
 	// Draws Background Image
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Scale(0.5, 0.5)
+	// op.GeoM.Scale(0.5, 0.5)
+	pos = pos - 4
+	op.GeoM.Translate(pos, 0)
 	screen.DrawImage(backgroundImage, op)
 
 	// Draws the Gopher
@@ -156,6 +149,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	ebitenutil.DebugPrint(screen, msg)
 }
 
+// Layout ...
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return screenWidth, screenHeight
 }
