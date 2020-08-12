@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"image"
+	"image/color"
 	_ "image/png"
 
 	"github.com/hajimehoshi/ebiten"
@@ -56,7 +57,7 @@ func init() {
 
 const (
 	unit    = 16
-	groundY = 340
+	groundY = 380
 )
 
 type char struct {
@@ -114,7 +115,7 @@ type Game struct {
 // Update ...
 func (g *Game) Update(screen *ebiten.Image) error {
 	if g.gopher == nil {
-		g.gopher = &char{x: 150 * unit, y: groundY * unit}
+		g.gopher = &char{x: 200 * unit, y: groundY * unit}
 	}
 
 	// Controls
@@ -143,7 +144,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	screen.DrawImage(backgroundImage, op)
 
 	// Draws the Gopher
-	g.gopher.draw(screen)
+	ebitenutil.DrawRect(screen, float64(g.gopher.x)/unit, float64(g.gopher.y)/unit, 20, 20, color.RGBA{0xff, 0x00, 0x00, 0xff})
+	// g.gopher.draw(screen)
 
 	// Show the message
 	msg := fmt.Sprintf("TPS: %0.2f\nPress the space key to jump.", ebiten.CurrentTPS())
