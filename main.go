@@ -56,7 +56,7 @@ func init() {
 
 const (
 	unit    = 16
-	groundY = 380
+	groundY = 340
 )
 
 type char struct {
@@ -114,14 +114,16 @@ type Game struct {
 // Update ...
 func (g *Game) Update(screen *ebiten.Image) error {
 	if g.gopher == nil {
-		g.gopher = &char{x: 50 * unit, y: groundY * unit}
+		g.gopher = &char{x: 150 * unit, y: groundY * unit}
 	}
 
 	// Controls
 	if ebiten.IsKeyPressed(ebiten.KeyA) || ebiten.IsKeyPressed(ebiten.KeyLeft) {
-		g.gopher.vx = -4 * unit
+		// g.gopher.vx = -4 * unit
+		pos += 4
 	} else if ebiten.IsKeyPressed(ebiten.KeyD) || ebiten.IsKeyPressed(ebiten.KeyRight) {
-		g.gopher.vx = 4 * unit
+		// g.gopher.vx = 4 * unit
+		pos -= 4
 	}
 	if inpututil.IsKeyJustPressed(ebiten.KeySpace) {
 		g.gopher.tryJump()
@@ -137,7 +139,6 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	// Draws Background Image
 	op := &ebiten.DrawImageOptions{}
 	// op.GeoM.Scale(0.5, 0.5)
-	pos = pos - 4
 	op.GeoM.Translate(pos, 0)
 	screen.DrawImage(backgroundImage, op)
 
